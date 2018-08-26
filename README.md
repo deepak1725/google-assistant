@@ -1,7 +1,7 @@
 # google-assistant
 Google Assistant, Blood Bank
 
-###Assistant: Blood Bank
+### Assistant: Blood Bank
 It is a Real Time Collection of Blood Donors Informations in a perticular Area.
 It is created with AIM of exchange of Information between Blood Seekers and Blood Donors for a Perticular area.
 
@@ -23,7 +23,7 @@ It is created with AIM of exchange of Information between Blood Seekers and Bloo
 1. The Project is using DialogFlow, Actions on Google, Firebase Functions and Firebase Real time Database.
 2. Please Note all information Provided by Donor is Public for any needy to access, I hasn't setup any useless Authetication, considering various factors.
 
-### :)
+### In the Service of Nation, :)
 
 
   
