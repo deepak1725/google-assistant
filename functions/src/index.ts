@@ -16,15 +16,16 @@ const getSomethingPromize = admin.database().ref(`/donar_list/`).orderByChild('b
 
 const app = dialogflow({debug: (functions.config().debug === 'true')});
 app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
-
+    console.log("params", parameters);
+    
     return getSomethingPromize.equalTo(parameters.blood_group)
             .once('value')
             .then((snapshot) => {
 
                 if (!conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT')) {
-                    conv.close('Sorry, try this on a screen device or select the ' +
+                    return conv.close('Sorry, try this on a screen device or select the ' +
                         'phone surface in the simulator.');
-                    return;
+                
                 }
 
                 let myItems = {};
@@ -84,19 +85,16 @@ app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
 
                         switch (itemCount) {
                             case 0:
-                                getSimpleResponse(conv, parameters);
+                                message = `Sorry! No Donors having ${parameters.blood_group} found in ${parameters.indian_states} area`;
                                 break;
 
                             case 1:
                                 message = `Details of ${parameters.blood_group} donors in ${parameters.indian_states} area`;
-
-                                getSimpleResponse(conv, parameters, message);
                                 getBasicCard(conv, singleRecord);
                                 break;
                         
                             default:
                                 message = `Details of ${parameters.blood_group} donors in ${parameters.indian_states} area`;
-                                getSimpleResponse(conv, parameters, message);
 
                                 conv.close(new List({
                                         title: `${parameters.blood_group} donors in ${parameters.indian_states}`,
@@ -105,7 +103,8 @@ app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
                         }
                 }
                                 
-                return;
+                
+                return getSimpleResponse(conv, parameters, message);
             });
 });
 
