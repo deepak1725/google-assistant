@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
 const admin = require('firebase-admin');
 
-const serviceAccount = require("../key/bb-doxxqy-firebase-adminsdk-ipsw1-e5c11b8ec6.json");
+const serviceAccount = require("../key/bb-doxxqy-firebase-adminsdk-ipsw1-9943fbc015.json");
 
-import {dialogflow, BasicCard, SimpleResponse, List} from 'actions-on-google';
+import {dialogflow, BasicCard, SimpleResponse, List, Carousel} from 'actions-on-google';
 
 
 admin.initializeApp({
@@ -14,7 +14,7 @@ admin.initializeApp({
 const getSomethingPromize = admin.database().ref(`/donar_list/`).orderByChild('blood_group');
 
 
-const app = dialogflow({debug: (functions.config().debug === 'true')});
+const app = dialogflow();
 app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
     console.log("params", parameters);
     
@@ -62,9 +62,9 @@ app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
                         snapshot.forEach(childSnapshot => {
                             
                             const entity = childSnapshot.val();
-                            const iS:any = parameters.indian_states;
+                            const state:any = parameters.indian_states;
 
-                            if (entity.state.toLowerCase() !== iS.toLowerCase()){                                
+                            if (entity.state.toLowerCase() !== state.toLowerCase()){                                
                                 return;
                             }
         
@@ -96,9 +96,9 @@ app.intent('bloodSeeker3 getLocation', async (conv:any, parameters) => {
                             default:
                                 message = `Details of ${parameters.blood_group} donors in ${parameters.indian_states} area`;
 
-                                conv.close(new List({
-                                        title: `${parameters.blood_group} donors in ${parameters.indian_states}`,
-                                        items: myItems,
+                                conv.ask(new List({
+                                    title: `${parameters.blood_group} donors in ${parameters.indian_states}`,
+                                    items: myItems,
                                 }));
                         }
                 }
@@ -122,7 +122,7 @@ function getSimpleResponse(conv, parameters, message=null){
 }
 
 function getBasicCard(conv, singleRecord){
-    return conv.close(new BasicCard({
+    return conv.ask(new BasicCard({
         text: `${singleRecord.blood_group}, ${singleRecord.state}`,
         subtitle: `Contact : ${singleRecord.phone} ${singleRecord.phone2}, ${singleRecord.city}, ${singleRecord.state}, ${singleRecord.pincode}, ${singleRecord.comment}  `,
         title: `${singleRecord.name}`,
