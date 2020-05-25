@@ -1,13 +1,11 @@
 import * as functions from 'firebase-functions';
 const admin = require('firebase-admin');
 
-const serviceAccount = require("../key/bb-doxxqy-firebase-adminsdk-ipsw1-9943fbc015.json");
-
 import {dialogflow, BasicCard, SimpleResponse, List, Carousel} from 'actions-on-google';
 
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.applicationDefault(),
     databaseURL: "https://bb-doxxqy.firebaseio.com"
 });
 
